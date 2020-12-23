@@ -1,13 +1,15 @@
-const express = require("express"),
+const socketio = require('socket.io');
+const http = require('http');
+const express = require("express")
 
-    app = express(),
-    port = process.env.PORT || 5000,
-    cors = require("cors");
+const router = require("./Components/Router");
 
+const PORT = process.env.PORT || 5000;
 
-app.use(cors());
-app.listen(port, ()=>console.log("Backend Express server is live! Port: " + port));
+const app = express();
+const server = http.createServer(app);
+const io = socketio(server);
 
-app.get("/", (req,res)=>{
-    res.send({message: "Backend is Live!"});
-});
+app.use(router);
+
+server.listen(PORT, ()=>console.log(`Server started on PORT ${PORT}`));
